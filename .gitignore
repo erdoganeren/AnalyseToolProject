@@ -165,4 +165,5 @@ $RECYCLE.BIN/
 
 /tmp/*
 
-/sonar/*
+/sonar/sonar-scanner/*
+/sonar/sonarqube-8.5.1.38104/*

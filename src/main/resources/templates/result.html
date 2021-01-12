@@ -89,7 +89,7 @@ p {
 			<div class="boxValue" th:utext="${numberOfIssues}"></div>
 		</div>
 
-		<div class="valueBox">
+		<div title="Complexity (complexity) It is the Cyclomatic Complexity calculated based on the number of paths through the code. Whenever the control flow of a function splits, the complexity counter gets incremented by one" class="valueBox">
 			<h2>Cyclomatic Complexity</h2>
 			<div class="boxValue" th:utext="${complexity}"></div>
 		</div>
@@ -98,11 +98,7 @@ p {
 			<div class="boxValue" th:utext="${ncloc}"></div>
 		</div>
 
-		<div th:if="${analyseLink != null}">
-			Sie könne die Analyse Ergebnise Hier betrachten:
-			<div th:utext="${analyseLink}"></div>
-			<a th:href="${analyseLink}"></a>
-		</div>
+		
 	</div>
 	<div class="codeSmellList">
 		<table border="1px" class="valueTable">
@@ -124,6 +120,10 @@ p {
 				</tr>
 			</tbody>
 		</table>
+	</div>
+	<div th:if="${analyseLink != null}">
+			Sie könne die Analyse Ergebnise Hier betrachten: <a th:href="${analyseLink}">hier</a>
+			<div th:utext="${analyseLink}"></div>			
 	</div>
 	<!-- Bootstrap core JavaScript -->
 	<script src="vendor/jquery/jquery.min.js"></script>

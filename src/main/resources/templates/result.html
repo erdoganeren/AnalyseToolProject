@@ -2,7 +2,7 @@
 <html lang="de" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <script src="js/result.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <style>
 p {
 	color: black;
@@ -11,9 +11,11 @@ p {
 .boxValue {
 	font-size: 100px;
 }
+
 .boxValueSmall {
 	font-size: 30px;
 }
+
 .valueBox {
 	text-align: center;
 	float: left;
@@ -23,6 +25,15 @@ p {
 	border: 1px solid black;
 	width: 260px;
 	height: 280px;
+}
+
+.grafikBox {
+	float: left;
+	padding: 53px;
+	background: #eee;
+	margin: 10px;
+	height: 280px;
+	border: 1px solid black;
 }
 
 .tableContainer {
@@ -91,25 +102,29 @@ p {
 				<div class="boxValue" th:utext="${numberOfIssues}"></div>
 			</div>
 
+			<div class="grafikBox">
+				<h2></h2>
+				<canvas id="myChart"></canvas>
+			</div>
+
 			<div
 				title="Complexity (complexity) It is the Cyclomatic Complexity calculated based on the number of paths through the code. Whenever the control flow of a function splits, the complexity counter gets incremented by one"
 				class="valueBox">
 				<h2>Cyclomatic Complexity</h2>
 				<div class="boxValue" th:utext="${complexity}"></div>
 			</div>
-			
-			<div title="NCLOC is the number of non-commenting lines of code" 
-				 class="valueBox">
+
+			<div title="NCLOC is the number of non-commenting lines of code"
+				class="valueBox">
 				<h2>NCLOC</h2>
 				<div class="boxValue" th:utext="${ncloc}"></div>
 			</div>
-			<div title="Number of duplicated file and lines." 
-				 class="valueBox">
+			<div title="Number of duplicated file and lines." class="valueBox">
 				<h2>Duplications</h2>
 				<div class="boxValueSmall" th:utext="Files"></div>
 				<div class="boxValueSmall" th:utext="${duplicated_files}"></div>
 				<div class="boxValueSmall" th:utext="Lines"></div>
-				<div class="boxValueSmall" th:utext="${duplicated_lines}"></div>				
+				<div class="boxValueSmall" th:utext="${duplicated_lines}"></div>
 			</div>
 		</div>
 		<br> <br>
@@ -160,6 +175,53 @@ p {
 		</div>
 	</footer>
 	<!-- Bootstrap core JavaScript -->
+
+	<script th:inline="javascript">				
+		
+	 	var blockerViolations = /*[[ ${blocker_violations} ]]*/[];
+		var criticalViolations = /*[[ ${critical_violations} ]]*/[];
+		var majorViolations = /*[[ ${major_violations} ]]*/[];
+		var minorViolations = /*[[ ${minor_violations} ]]*/[];
+		var infoViolations = /*[[ ${info_violations} ]]*/[];
+		
+        drawchart(blockerViolations, criticalViolations, majorViolations, minorViolations, infoViolations);
+        
+        function drawchart(blockerViolations, criticalViolations, majorViolations, minorViolations, infoViolations) {
+
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var ChartDemo = new Chart(ctx, {
+            	type: 'doughnut',
+                data: {
+    				datasets: [{
+    					data: [
+    						blockerViolations, 
+    						criticalViolations, 
+    						majorViolations, 
+    						minorViolations, 
+    						infoViolations
+    					], backgroundColor: [
+    		                'rgba(54, 162, 235, 0.8)', 
+    		                'rgba(255, 99, 132, 0.8)',
+    		                'rgba(54, 255, 235, 0.8)', 
+    		                'rgba(54, 162, 255, 0.8)', 
+    		                'rgba(235, 162, 235, 0.8)'
+    		            ],
+    					label: 'Violations'
+    				}],
+    				labels: [
+    					'Blocker',
+    					'Critical',
+    					'Major',
+    					'Minor',
+    					'Info'
+    				]
+    			},
+                options : {
+                    responsive : true,
+                }
+            });
+        }
+	</script>
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

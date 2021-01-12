@@ -11,4 +11,5 @@ Project clone: https://github.com/erdoganeren/masterarbeitProjekt_AnalyseTool.gi
 * SonarQube: https://github.com/SonarSource/sonarqube
 * SonarSource: https://github.com/SonarSource/sonar-scanner-cl
 * Image: https://nebula.wsimg.com/f50a09dc56320a7897903b42c4eefbae?AccessKeyId=16782B462767C1A01217&disposition=0&alloworigin=1
+* Chartjs: https://www.chartjs.org/
 

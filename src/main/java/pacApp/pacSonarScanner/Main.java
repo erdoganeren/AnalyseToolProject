@@ -148,7 +148,7 @@ public class Main {
 			status = isUserError(e) ? Exit.USER_ERROR : Exit.INTERNAL_ERROR;
 		} finally {
 			// exit.exit(status);
-			FileService.clearTempDir();
+			//FileService.clearTempDir();
 		}
 
 	}

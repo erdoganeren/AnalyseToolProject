@@ -53,6 +53,11 @@
 			<version>2.15.0.2182</version>
 		</dependency>
 
+ 	<dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20180813</version>
+    </dependency>
 	</dependencies>
 
 	<build>

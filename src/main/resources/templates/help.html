@@ -9,13 +9,11 @@ p {
 }
 
 .boxValue {
-	font-size: 100px;
+	font-size: 120px;
+	font-weight: 400;
 }
-.boxValueSmall {
-	font-size: 30px;
-}
+
 .valueBox {
-	text-align: center;
 	float: left;
 	padding: 20px;
 	background: #eee;
@@ -44,6 +42,10 @@ p {
 .valueTable {
 	width: 80%;
 }
+
+.mainContainer {
+	padding: 10px;
+}
 </style>
 <head>
 
@@ -53,7 +55,7 @@ p {
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Result</title>
+<title>Help</title>
 
 <!-- Bootstrap core CSS -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -69,75 +71,65 @@ p {
 
 </head>
 
-<body onload="onlaodBody()">
+<body>
 
 	<header class="masthead text-white text-center">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-9 mx-auto">
-					<h1 class="mb-5">Project Scanner</h1>
+					<h1 class="mb-5">Get information</h1>
 				</div>
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto"></div>
 			</div>
 		</div>
 		<h2 class="center" style="font-size: 50px;" th:utext="${message}">!</h2>
 	</header>
-	<div style="padding-left: 40px">
-		<h1 style="padding: 10px">Analyze results</h1>
-		<div class="metricMox">
-			<div class="valueBox">
-				<h2>Number of Issues</h2>
-				<div class="boxValue" th:utext="${numberOfIssues}"></div>
-			</div>
-
-			<div
-				title="Complexity (complexity) It is the Cyclomatic Complexity calculated based on the number of paths through the code. Whenever the control flow of a function splits, the complexity counter gets incremented by one"
-				class="valueBox">
-				<h2>Cyclomatic Complexity</h2>
-				<div class="boxValue" th:utext="${complexity}"></div>
-			</div>
-			
-			<div title="NCLOC is the number of non-commenting lines of code" 
-				 class="valueBox">
-				<h2>NCLOC</h2>
-				<div class="boxValue" th:utext="${ncloc}"></div>
-			</div>
-			<div title="Number of duplicated file and lines." 
-				 class="valueBox">
-				<h2>Duplications</h2>
-				<div class="boxValueSmall" th:utext="Files"></div>
-				<div class="boxValueSmall" th:utext="${duplicated_files}"></div>
-				<div class="boxValueSmall" th:utext="Lines"></div>
-				<div class="boxValueSmall" th:utext="${duplicated_lines}"></div>				
+	<br>
+	<div class="mainContainer container text-lg-left">
+		<div>
+			<div style="font-size: 17px; width: 800px;">
+				Here you get the most important information from the SonarQube
+				documentation. Regarding the analysis for further information,
+				please refer to the <a href="https://docs.sonarqube.org/latest/">SonarQube</a>
+				homepage.
 			</div>
 		</div>
-		<br> <br>
-		<div class="codeSmellList">
-			<table border="1px" class="valueTable">
-				<thead>
-					<tr>
-						<th>severity</th>
-						<th>component</th>
-						<th>line</th>
-						<th>message</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="measurement : ${analyseIssueList}">
-						<td><span th:text="${measurement.severity}"> Value </span></td>
-						<td><span th:text="${measurement.component}"> Distance
-						</span></td>
-						<td><span th:text="${measurement.line}"> DateTime </span></td>
-						<td><span th:text="${measurement.message}"> Risiko </span></td>
-
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div style="padding: 10px" th:if="${analyseLink != null}">
-			Sie könne die Analyse Ergebnise Hier betrachten: <a
-				th:href="${analyseLink}">hier</a>
+		<br>
+		<div>
+			<div>
+				<h3>Issue Types</h3>
+				<p>There are three types of issues:</p>
+				<ol>
+					<li><strong>Bug</strong> – A coding error that will break your
+						code and needs to be fixed immediately.</li>
+					<li><strong>Vulnerability</strong> – A point in your code
+						that's open to attack.</li>
+					<li><strong>Code Smell</strong> – A maintainability issue that
+						makes your code confusing and difficult to maintain.</li>
+				</ol>
+				<h3>Issue Severity</h3>
+				<p>Each issue has one of five severities:</p>
+				<ol>
+					<li><strong>BLOCKER</strong><br> Bug with a high
+						probability to impact the behavior of the application in
+						production: memory leak, unclosed JDBC connection, .... The code
+						MUST be immediately fixed.</li>
+					<li><strong>CRITICAL</strong><br> Either a bug with a low
+						probability to impact the behavior of the application in
+						production or an issue which represents a security flaw: empty
+						catch block, SQL injection, ... The code MUST be immediately
+						reviewed.</li>
+					<li><strong>MAJOR</strong><br> Quality flaw which can
+						highly impact the developer productivity: uncovered piece of code,
+						duplicated blocks, unused parameters, ...</li>
+					<li><strong>MINOR</strong><br> Quality flaw which can
+						slightly impact the developer productivity: lines should not be
+						too long, "switch" statements should have at least 3 cases, ...</li>
+					<li><strong>INFO</strong><br> Neither a bug nor a quality
+						flaw, just a finding.</li>
+				</ol>
+			</div>
 		</div>
 	</div>
 	<!-- Footer -->
@@ -162,7 +154,6 @@ p {
 	<!-- Bootstrap core JavaScript -->
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

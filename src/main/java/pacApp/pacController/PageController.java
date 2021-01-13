@@ -21,7 +21,7 @@ public class PageController {
     }
    
     @GetMapping("/about")
-    public String getAboutPage() {
+    public String getAbutPage() {
         return "about";
     }
 }

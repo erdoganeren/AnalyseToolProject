@@ -22,7 +22,7 @@ public class AnalyseToolMachine extends SpringBootServletInitializer{
 		try {
 			SpringApplication.run(AnalyseToolMachine.class, args);	
 			//Runtime.getRuntime().exec("cmd /c start \"\" StartQube.bat");			
-			String qubePath = Paths.get("sonar").toFile().getAbsolutePath() + Paths.get("/sonarqube-8.5.1.38104/bin/windows-x86-64/StartSonar.bat");
+			String qubePath = Paths.get("sonar").toFile().getAbsolutePath() + Paths.get("/sonarqube-8.6.0.39681/bin/windows-x86-64/StartSonar.bat");
 			Runtime.getRuntime().exec("cmd /c start \"\" " + qubePath); 
 		} catch (Exception e) {
 			e.printStackTrace();

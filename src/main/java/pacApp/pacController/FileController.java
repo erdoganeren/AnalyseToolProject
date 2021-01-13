@@ -5,13 +5,16 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,21 +52,24 @@ public class FileController {
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") List<MultipartFile> file, RedirectAttributes redirectAttributes, HttpServletRequest request,	 Model model) {
-    	request.getLocalAddr();
     	String analyseLink = ""; 
         analyseLink = getHostNameAndPort()+"/project/issues?id=";
     	    
     	String projectKey =  fileService.uploadFile(file); // create tmp Files
     	//String projectKey = HelperClass.getProjectKeyFromPath(dirPath); 
-    	main.execute(Paths.get("tmp/" + projectKey).toAbsolutePath().toString(), projectKey);
+    	HashMap<Integer, String> messageStatus = main.execute(Paths.get("tmp/" + projectKey).toAbsolutePath().toString(), projectKey);
+    	if (messageStatus.get(0) == null ) {   		
+    		model.addAttribute("errorMessage", messageStatus.get(1)!= null ? messageStatus.get(1): messageStatus.get(2));
+    		return "errorPage";
+    	}
     	analyseLink = analyseLink +  projectKey;
     	model.addAttribute("message", "Projekt wurde erfolgreich gescannt!");
     	// Clear the temp directory 
-    	//FileService.clearTempDir();
+    	FileService.clearTempDir();
     	
     	//sleep for sonarQube report
     	try {
-			Thread.sleep(3000);
+			Thread.sleep(7000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} 
@@ -85,6 +91,12 @@ public class FileController {
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestProperty("accept", "application/json");
 			con.setRequestMethod("GET");
+			
+			String auth = "admin:pwd";
+			byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8));
+			String authHeaderValue = "Basic " + new String(encodedAuth);
+			con.setRequestProperty("Authorization", authHeaderValue);
+
 			
 			InputStream responseStream = con.getInputStream();
 			ObjectMapper mapper = new ObjectMapper();
@@ -116,6 +128,11 @@ public class FileController {
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestProperty("accept", "application/json");
 			con.setRequestMethod("GET");
+			
+			String auth = "admin:pwd";
+			byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8));
+			String authHeaderValue = "Basic " + new String(encodedAuth);
+			con.setRequestProperty("Authorization", authHeaderValue);
 
 			InputStream responseStream = con.getInputStream();
 			ObjectMapper mapper = new ObjectMapper();
@@ -137,7 +154,7 @@ public class FileController {
 
 	}
 	private String getHostNameAndPort() {
-		return "http://" + InetAddress.getLoopbackAddress().getHostName()+ ":8181";
+		return "http://" + InetAddress.getLoopbackAddress().getHostName()+ ":9000";
 	}
       
 }

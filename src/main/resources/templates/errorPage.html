@@ -55,7 +55,7 @@ p {
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Abaut</title>
+<title>Error :/</title>
 
 <!-- Bootstrap core CSS -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -78,7 +78,7 @@ p {
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-9 mx-auto">
-					<h1 class="mb-5">About & Sources</h1>
+					<h1 class="mb-5">Error :/</h1>
 				</div>
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto"></div>
 			</div>
@@ -88,52 +88,11 @@ p {
 	<br>
 	<div class="mainContainer container text-lg-left">
 		<div style="width: 600px; padding: 10px">
-			<h2>About</h2>
-			<table style="width: 100%">
-				<tr>
-					<th style="width: 15%"></th>
-					<th></th>
-				</tr>
-				<tr>
-					<td style="font-weight: bold;">Author:</td>
-					<td>Eren Erdogan</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-			<h2>Sources</h2>
-			<table style="width: 100%">
-				<tr>
-					<th style="width: 35%"></th>
-					<th></th>
-				</tr>
-				<tr>
-					<td style="font-weight: bold;">Website:</td>
-					<td>https://github.com/startbootstrap/startbootstrap-landing-page</td>
-				</tr>
-				<tr>
-					<td style="font-weight: bold;">SonarQube:</td>
-					<td>https://github.com/SonarSource/sonarqube</td>
-				</tr>
-				<tr>
-					<td style="font-weight: bold;">SonarSource:</td>
-					<td>https://github.com/SonarSource/sonar-scanner-cl</td>
-				</tr>
-				<tr>
-					<td style="font-weight: bold;">Image:</td>
-					<td>https://nebula.wsimg.com/f50a09dc56320a7897903b42c4eefbae?AccessKeyId=16782B462767C1A01217&disposition=0&alloworigin=1</td>
-				</tr>
-				<tr>
-					<td style="font-weight: bold;">Loading animation:</td>
-					<td>https://miro.medium.com/max/6684/1*F_5AEXIfr1AXuShXhYT4zg.gif</td>
-				</tr>
-				<tr>
-					<td style="font-weight: bold;">chartjs</td>
-					<td>https://www.chartjs.org/</td>
-				</tr>				
-			</table>
+			<h1>Something went wrong</h1>
+				<div th:if="${errorMessage != null}">
+					<h2>Message:</h2>
+					<div th:utext="${errorMessage}"></div>
+				</div>
 		</div>
 	</div>
 	<!-- Footer -->

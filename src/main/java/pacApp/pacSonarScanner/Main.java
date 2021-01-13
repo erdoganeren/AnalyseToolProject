@@ -38,6 +38,8 @@ package pacApp.pacSonarScanner;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -108,33 +110,33 @@ public class Main {
 		// "my:project3");
 		// execute(Paths.get("C:\\Users\\eeren\\git\\TestPoj").toString(),
 		// "my:project11");
-		//execute(Paths.get("C:\\Users\\eeren\\git\\masterarbeitProjekt_AnalyseTool\\tmp\\TestPoj").toString(),"my:project1");
+		new Main().execute(Paths.get("C:\\Users\\eeren\\git\\TestPoj").toString(),"my:project1");
 	}
 
-	public void execute(String path, String projectKey) {
+	public HashMap<Integer, String> execute(String path, String projectKey) {
 		Logs logs = new Logs(System.out, System.err);
 		Exit exit = new Exit();
 		Cli cli = new Cli(exit, logs).parse(new String[0]);
 		Main main = new Main(exit, cli, new Conf(cli, logs, System.getenv()), new ScannerFactory(logs), logs);
-		main.executeInternal(path, projectKey);
+		return main.executeInternal(path, projectKey);
 	}
 
-	private void executeInternal(String path, String projectKey) {
+	private HashMap<Integer, String> executeInternal(String path, String projectKey) {
 		Stats stats = new Stats(logger).start();
-
+		HashMap<Integer, String> messageStatus = new HashMap();
 		int status = Exit.INTERNAL_ERROR;
 		try {
 			Properties p = conf.properties();
-
-			p.put("sonar.host.url", "http://localhost:8181");
+			p.put("sonar.host.url", "http://localhost:9000");
 			p.put("sonar.projectKey", projectKey);
 			p.put("sonar.projectBaseDir", path);
-			p.put("sonar.sources", "src\\main\\java");
+			p.put("sonar.java.sources", "src\\main\\java");
 			p.put("sonar.java.binaries", "target/classes");
+			p.put("sonar.scm.exclusions.disabled","true");
 			// p.put("sonar.exclusions","**/2");
-			p.put("sonar.language", "java");
-			p.put("sonar.scm.exclusions.disabled", "true");
-
+			p.put("sonar.login", "admin");
+			p.put("sonar.password", "pwd");
+			
 			checkSkip(p);
 			configureLogging(p);
 			init(p);
@@ -142,13 +144,17 @@ public class Main {
 			logger.info(String.format("Analyzing on %s", conf.isSonarCloud(null) ? "SonarCloud" : ("SonarQube server " + runner.serverVersion())));
 			execute(stats, p);
 			status = Exit.SUCCESS;
+			messageStatus.put(status, "SUCCESS");
+			return messageStatus;
 		} catch (Throwable e) {
 			displayExecutionResult(stats, "FAILURE");
 			showError("Error during SonarScanner execution", e, cli.isDebugEnabled());
 			status = isUserError(e) ? Exit.USER_ERROR : Exit.INTERNAL_ERROR;
+			messageStatus.put(status, e.getMessage());
+			return messageStatus;
 		} finally {
 			// exit.exit(status);
-			//FileService.clearTempDir();
+			// FileService.clearTempDir();
 		}
 
 	}

@@ -55,6 +55,9 @@ p {
 .valueTable {
 	width: 80%;
 }
+.mainContainer {
+	padding: 10px;
+}
 </style>
 <head>
 
@@ -94,7 +97,7 @@ p {
 		</div>
 		<h2 class="center" style="font-size: 50px;" th:utext="${message}">!</h2>
 	</header>
-	<div style="padding-left: 40px">
+	<div class="mainContainer container text-lg-left">
 		<h1 style="padding: 10px">Analyze results</h1>
 		<div class="metricMox">
 			<div class="valueBox">
@@ -132,10 +135,10 @@ p {
 			<table border="1px" class="valueTable">
 				<thead>
 					<tr>
-						<th>severity</th>
-						<th>component</th>
-						<th>line</th>
-						<th>message</th>
+						<th>Severity</th>
+						<th>Component</th>
+						<th>Line</th>
+						<th>Message</th>
 					</tr>
 				</thead>
 				<tbody>

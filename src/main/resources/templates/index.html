@@ -20,17 +20,16 @@
 }
 
 #loading {
-    background: url('img/spinner.gif') no-repeat center center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9999999;
-    height: 100%;
-    width: 100%;
-    opacity: 30%;
-    display: none;
+	background: url('img/spinner.gif') no-repeat center center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 9999999;
+	height: 100%;
+	width: 100%;
+	opacity: 30%;
+	display: none;
 }
-
 </style>
 <title>Java Project Analyzer</title>
 
@@ -52,16 +51,6 @@
 </head>
 
 <body>
-	<!-- Navigation -->
-	<!--
-  <nav class="navbar navbar-light bg-light static-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
-      <a class="btn btn-primary" href="#">Sign In</a>
-    </div>
-  </nav>
-	-->
-	<!-- Masthead -->
 	<header class="masthead text-white text-center">
 		<div class="overlay"></div>
 		<div class="container">
@@ -70,28 +59,15 @@
 					<h1 class="mb-5">Java Project Analyzer</h1>
 				</div>
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-					<!--
-          <form>
-            <div class="form-row">
-              <div class="col-12 col-md-9 mb-2 mb-md-0">
-                <input type="email" class="form-control form-control-lg" placeholder="Enter your email...">
-              </div>
-              <div class="col-12 col-md-3">
-                <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
-              </div>
-            </div>
-          </form>
-          -->
 					<form method="POST" th:action="@{/uploadFile}"
 						enctype="multipart/form-data">
 						<div class="form-row">
 							<input type="file" class="fileBox" name="file" webkitdirectory
-								multiple /> <br />
-							<br />
-							<button type="submit" class="btn btn-block btn-lg btn-primary" onclick="enableLoader()">Scan Project</button>
+								multiple /> <br /> <br />
+							<button type="submit" class="btn btn-block btn-lg btn-primary"
+								onclick="enableLoader()">Scan Project</button>
 						</div>
 					</form>
-
 				</div>
 			</div>
 		</div>
@@ -103,16 +79,17 @@
 		Sie könne die Analyse Ergebnise Hier betrachten:
 		<div th:utext="${analyseLink}"></div>
 	</div>
-	
+
 	<div id="loading"></div>
-	
+
 	<!-- Footer -->
 	<footer class="footer bg-light">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 h-100 text-center text-lg-left my-auto">
 					<ul class="list-inline mb-2">
-						<li class="list-inline-item"><a th:href="@{/about}">About & Sources</a></li>
+						<li class="list-inline-item"><a th:href="@{/about}">About
+								& Sources</a></li>
 					</ul>
 					<ul class="list-inline mb-2">
 						<li class="list-inline-item"><a th:href="@{/help}">Help</a></li>
@@ -128,13 +105,12 @@
 	<!-- Bootstrap core JavaScript -->
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	
+
 	<script type="text/javascript">
-		function enableLoader(){
+		function enableLoader() {
 			document.getElementById("loading").style.display = "block";
-		}	
+		}
 	</script>
 
 </body>
-
 </html>

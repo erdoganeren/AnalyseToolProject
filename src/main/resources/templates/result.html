@@ -9,7 +9,7 @@ p {
 }
 
 .boxValue {
-	font-size: 100px;
+	font-size: 80px;
 }
 
 .boxValueSmall {
@@ -23,8 +23,8 @@ p {
 	background: #eee;
 	margin: 10px;
 	border: 1px solid black;
-	width: 260px;
-	height: 280px;
+	width: 230px;
+	height: 240px;
 }
 
 .grafikBox {
@@ -32,7 +32,7 @@ p {
 	padding: 53px;
 	background: #eee;
 	margin: 10px;
-	height: 280px;
+	height: 230px;
 	border: 1px solid black;
 }
 
@@ -122,6 +122,44 @@ p {
 				<h2>NCLOC</h2>
 				<div class="boxValue" th:utext="${ncloc}"></div>
 			</div>
+			
+			<div title="Number of comments"
+				class="valueBox">
+				<h2>Comment lines</h2>
+				<div class="boxValue" th:utext="${comment_lines}"></div>
+			</div>
+			
+			<div title="Number of classes"
+				class="valueBox">
+				<h2>Classes</h2>
+				<div class="boxValue" th:utext="${classes}"></div>
+			</div>
+			
+			<div title="Density of comment lines"
+				class="valueBox">
+				<h2>Comments (%)</h2>
+				<div class="boxValue" th:utext="${comment_lines_density}"></div>
+			</div>
+			
+			<div title="Functions"
+				class="valueBox">
+				<h2>Number of functions</h2>
+				<div class="boxValue" th:utext="${functions}"></div>
+			</div>
+			
+			<div title="Total count of Code Smell"
+				class="valueBox">
+				<h2>Code Smell</h2>
+				<div class="boxValue" th:utext="${code_smells}"></div>
+			</div>
+			
+			<div title="How hard it is to understand the code's control flow."
+				class="valueBox">
+				<h2>Cognitive Complexity</h2>
+				<div class="boxValue" th:utext="${cognitive_complexity}"></div>
+			</div>
+			
+			
 			<div title="Number of duplicated file and lines." class="valueBox">
 				<h2>Duplications</h2>
 				<div class="boxValueSmall" th:utext="Files"></div>
@@ -154,8 +192,10 @@ p {
 			</table>
 		</div>
 		<div style="padding: 10px" th:if="${analyseLink != null}">
-			Sie könne die Analyse Ergebnise Hier betrachten: <a
-				th:href="${analyseLink}">hier</a>
+			Sie können die detaillierte SonarQube Analyse Ergebnise hier betrachten: <a th:href="${analyseLink}">hier</a> <br>
+			<input id="csvAnalyseValues" th:value="${csvAnalyseValues}" style="display:none">
+			
+			Hier können Sie die Analyse Werte generieren: <button th:onclick="exportAnalyseValuesToCSV()" >generate CSV</button>
 		</div>
 	</div>
 	<!-- Footer -->

@@ -23,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,6 +51,12 @@ public class FileController {
         return "upload";
     }
 
+    @GetMapping("/getAnalyseCsv")
+    @ResponseBody
+    public String getAnalyseCsv(@RequestParam("csvAnalyseValues") String csvAnalyseValues) {
+    	return csvAnalyseValues;
+    }
+    
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") List<MultipartFile> file, RedirectAttributes redirectAttributes, HttpServletRequest request,	 Model model) {
     	String analyseLink = ""; 
@@ -57,6 +64,7 @@ public class FileController {
     	    
     	String projectKey =  fileService.uploadFile(file); // create tmp Files
     	//String projectKey = HelperClass.getProjectKeyFromPath(dirPath); 
+    	
     	HashMap<Integer, String> messageStatus = main.execute(Paths.get("tmp/" + projectKey).toAbsolutePath().toString(), projectKey);
     	if (messageStatus.get(0) == null ) {   		
     		model.addAttribute("errorMessage", messageStatus.get(1)!= null ? messageStatus.get(1): messageStatus.get(2));
@@ -83,6 +91,8 @@ public class FileController {
     	model.addAttribute("analyseLink", analyseLink);
         return "result";
     }
+    
+   
     
 	private boolean handleIssues(String projectKey, Model model) {
 		URL url;
@@ -124,7 +134,7 @@ public class FileController {
 	private boolean handleMetrics(String projectKey, Model model) {
 		URL url;
 		try {
-			url = new URL(getHostNameAndPort() + "/api/measures/component?component="+projectKey+"&metricKeys=ncloc,complexity,violations,blocker_violations,critical_violations,major_violations,minor_violations,info_violations,duplicated_lines,duplicated_files");
+			url = new URL(getHostNameAndPort() + "/api/measures/component?component="+projectKey+"&metricKeys="+getAnalyseMetricsInStringList());
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestProperty("accept", "application/json");
 			con.setRequestMethod("GET");
@@ -138,13 +148,14 @@ public class FileController {
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String, Object> jsonMap = mapper.readValue(responseStream, Map.class);
 			JSONObject json = new JSONObject(jsonMap);
-			//model.addAttribute("metricValue", json.get("component"));
 
 			JSONObject jo = (JSONObject) json.get("component");
+			model.addAttribute("csvAnalyseValues", convertJsonAnalyseValuesToCsv(jo));
+			
 			JSONArray jsonMeasures = (JSONArray)jo.get("measures");
 			for(int i=0;i < jsonMeasures.length(); i++) {
 				JSONObject jmetrics = (JSONObject)jsonMeasures.get(i);				
-				model.addAttribute(jmetrics.getString("metric"), jmetrics.getString("value")); // metrics: complexity, violations				
+				model.addAttribute(jmetrics.getString("metric"), jmetrics.getString("value"));				
 			}
 			return true;
 		} catch (IOException e) {
@@ -153,8 +164,25 @@ public class FileController {
 		}
 
 	}
+	
+	private String getAnalyseMetricsInStringList() {
+		return "ncloc,complexity,violations,blocker_violations,critical_violations,major_violations,"
+				+ "minor_violations,info_violations,duplicated_lines,duplicated_files,"
+				+ "comment_lines,classes,comment_lines_density,functions,"
+				+ "code_smells,cognitive_complexity";
+	}
 	private String getHostNameAndPort() {
 		return "http://" + InetAddress.getLoopbackAddress().getHostName()+ ":9000";
 	}
-      
+    
+	private String convertJsonAnalyseValuesToCsv(JSONObject jo) { 
+		JSONArray jsonMeasures = (JSONArray)jo.get("measures");
+		final String newLine = System.getProperty("line.separator");
+		StringBuilder csvReturnValue = new StringBuilder();
+		for(int i=0;i < jsonMeasures.length(); i++) {
+			JSONObject jmetrics = (JSONObject)jsonMeasures.get(i);				
+			csvReturnValue.append(jmetrics.getString("metric")+";"+jmetrics.getString("value")+";"+ newLine);
+		}
+		return csvReturnValue.toString();
+	}
 }

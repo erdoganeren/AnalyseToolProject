@@ -178,10 +178,11 @@ public class FileController {
 	private String convertJsonAnalyseValuesToCsv(JSONObject jo) { 
 		JSONArray jsonMeasures = (JSONArray)jo.get("measures");
 		final String newLine = System.getProperty("line.separator");
+		final String htmlLineBrake = "<br>";
 		StringBuilder csvReturnValue = new StringBuilder();
 		for(int i=0;i < jsonMeasures.length(); i++) {
 			JSONObject jmetrics = (JSONObject)jsonMeasures.get(i);				
-			csvReturnValue.append(jmetrics.getString("metric")+";"+jmetrics.getString("value")+";"+ newLine);
+			csvReturnValue.append(jmetrics.getString("metric")+";"+jmetrics.getString("value")+";"+ newLine+htmlLineBrake);
 		}
 		return csvReturnValue.toString();
 	}

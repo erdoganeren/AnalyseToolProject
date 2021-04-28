@@ -169,7 +169,7 @@ public class FileController {
 		return "ncloc,complexity,violations,blocker_violations,critical_violations,major_violations,"
 				+ "minor_violations,info_violations,duplicated_lines,duplicated_files,"
 				+ "comment_lines,classes,comment_lines_density,functions,"
-				+ "code_smells,cognitive_complexity";
+				+ "code_smells,vulnerabilities,bugs,cognitive_complexity";
 	}
 	private String getHostNameAndPort() {
 		return "http://" + InetAddress.getLoopbackAddress().getHostName()+ ":9000";

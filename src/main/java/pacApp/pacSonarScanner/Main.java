@@ -131,7 +131,7 @@ public class Main {
 			p.put("sonar.projectKey", projectKey);
 			p.put("sonar.projectBaseDir", path);
 			p.put("sonar.java.sources", "src\\main\\java");
-			p.put("sonar.java.binaries", "target/classes");
+			p.put("sonar.java.binaries", "*");
 			p.put("sonar.scm.exclusions.disabled","true");
 			// p.put("sonar.exclusions","**/2");
 			p.put("sonar.login", "admin");

@@ -8,6 +8,9 @@ p {
 	color: black;
 }
 
+h2{
+	font-size: 600px;
+}
 .boxValue {
 	font-size: 80px;
 }
@@ -23,7 +26,7 @@ p {
 	background: #eee;
 	margin: 10px;
 	border: 1px solid black;
-	width: 230px;
+	width: 245px;
 	height: 240px;
 }
 
@@ -32,7 +35,7 @@ p {
 	padding: 53px;
 	background: #eee;
 	margin: 10px;
-	height: 230px;
+	height: 240px;
 	border: 1px solid black;
 }
 
@@ -116,6 +119,12 @@ p {
 				<h2>Cyclomatic Complexity</h2>
 				<div class="boxValue" th:utext="${complexity}"></div>
 			</div>
+			
+			<div title="How hard it is to understand the code's control flow."
+				class="valueBox">
+				<h2>Cognitive Complexity</h2>
+				<div class="boxValue" th:utext="${cognitive_complexity}"></div>
+			</div>
 
 			<div title="NCLOC is the number of non-commenting lines of code"
 				class="valueBox">
@@ -129,36 +138,23 @@ p {
 				<div class="boxValue" th:utext="${comment_lines}"></div>
 			</div>
 			
-			<div title="Number of classes"
-				class="valueBox">
-				<h2>Classes</h2>
-				<div class="boxValue" th:utext="${classes}"></div>
-			</div>
-			
 			<div title="Density of comment lines"
 				class="valueBox">
 				<h2>Comments (%)</h2>
 				<div class="boxValue" th:utext="${comment_lines_density}"></div>
 			</div>
 			
+			<div title="Number of classes"
+				class="valueBox">
+				<h2>Classes</h2>
+				<div class="boxValue" th:utext="${classes}"></div>
+			</div>
+						
 			<div title="Functions"
 				class="valueBox">
 				<h2>Number of functions</h2>
 				<div class="boxValue" th:utext="${functions}"></div>
 			</div>
-			
-			<div title="Total count of Code Smell"
-				class="valueBox">
-				<h2>Code Smell</h2>
-				<div class="boxValue" th:utext="${code_smells}"></div>
-			</div>
-			
-			<div title="How hard it is to understand the code's control flow."
-				class="valueBox">
-				<h2>Cognitive Complexity</h2>
-				<div class="boxValue" th:utext="${cognitive_complexity}"></div>
-			</div>
-			
 			
 			<div title="Number of duplicated file and lines." class="valueBox">
 				<h2>Duplications</h2>
@@ -167,6 +163,25 @@ p {
 				<div class="boxValueSmall" th:utext="Lines"></div>
 				<div class="boxValueSmall" th:utext="${duplicated_lines}"></div>
 			</div>
+			
+			<div title="Total count of Bugs"
+				class="valueBox">
+				<h2>Bugs</h2>
+				<div class="boxValue" th:utext="${bugs}"></div>
+			</div>
+			
+			<div title="Total count of vulnerabilities"
+				class="valueBox">
+				<h2>Vulnerabilities</h2>
+				<div class="boxValue" th:utext="${vulnerabilities}"></div>
+			</div>
+			
+			<div title="Total count of Code Smell"
+				class="valueBox">
+				<h2>Code Smells</h2>
+				<div class="boxValue" th:utext="${code_smells}"></div>
+			</div>
+						
 		</div>
 		<br> <br>
 		<div class="codeSmellList">

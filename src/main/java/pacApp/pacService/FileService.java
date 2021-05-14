@@ -3,7 +3,6 @@ package pacApp.pacService;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -40,8 +39,8 @@ public class FileService {
         		mkdirForFile(copyLocation);
         		try {
         			Files.copy(file.getInputStream(), copyLocation , StandardCopyOption.REPLACE_EXISTING);
-        		}catch( NoSuchFileException nsfe) {
-        			//do Nothing
+        		}catch( Exception nsfe) {
+        			nsfe.printStackTrace();
         		}
         	}
         	

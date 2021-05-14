@@ -63,14 +63,14 @@ public class FileController {
         analyseLink = getHostNameAndPort()+"/project/issues?id=";
     	    
     	String projectKey =  fileService.uploadFile(file); // create tmp Files
-    	//String projectKey = HelperClass.getProjectKeyFromPath(dirPath); 
-    	
+    	// start sonarscanner
     	HashMap<Integer, String> messageStatus = main.execute(Paths.get("tmp/" + projectKey).toAbsolutePath().toString(), projectKey);
     	if (messageStatus.get(0) == null ) {   		
     		model.addAttribute("errorMessage", messageStatus.get(1)!= null ? messageStatus.get(1): messageStatus.get(2));
     		return "errorPage";
     	}
     	analyseLink = analyseLink +  projectKey;
+    	// add message
     	model.addAttribute("message", "Projekt wurde erfolgreich gescannt!");
     	// Clear the temp directory 
     	FileService.clearTempDir();
@@ -82,12 +82,11 @@ public class FileController {
 			e.printStackTrace();
 		} 
     	
-    	//TODO: add Severity
+    	// handle metrics
     	handleIssues(projectKey,model);
     	handleMetrics(projectKey, model);
-    	// get metrics from api
     	
-    	
+    	//create link for Sonarqube homepage
     	model.addAttribute("analyseLink", analyseLink);
         return "result";
     }
@@ -134,11 +133,12 @@ public class FileController {
 	private boolean handleMetrics(String projectKey, Model model) {
 		URL url;
 		try {
+			// create url con connection
 			url = new URL(getHostNameAndPort() + "/api/measures/component?component="+projectKey+"&metricKeys="+getAnalyseMetricsInStringList());
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestProperty("accept", "application/json");
 			con.setRequestMethod("GET");
-			
+			// add auth String 
 			String auth = "admin:pwd";
 			byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8));
 			String authHeaderValue = "Basic " + new String(encodedAuth);
@@ -151,7 +151,7 @@ public class FileController {
 
 			JSONObject jo = (JSONObject) json.get("component");
 			model.addAttribute("csvAnalyseValues", convertJsonAnalyseValuesToCsv(jo));
-			
+			// handle JsonArray and set to view model
 			JSONArray jsonMeasures = (JSONArray)jo.get("measures");
 			for(int i=0;i < jsonMeasures.length(); i++) {
 				JSONObject jmetrics = (JSONObject)jsonMeasures.get(i);				
@@ -162,7 +162,6 @@ public class FileController {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 	
 	private String getAnalyseMetricsInStringList() {
